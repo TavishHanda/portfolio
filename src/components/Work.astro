@@ -146,13 +146,15 @@ const first = projects[0].data;
     try {
       const res = await fetch(el.dataset.url!, { signal: AbortSignal.timeout(30_000) });
       if (!res.ok) return;
-      const data: { day: string | null; requestsThatDay: number; topServiceThatDay: string | null } = await res.json();
+      const data: { day: string | null; requestsThatDay: number; topServiceThatDay: string | null; topServiceThatDayDescription?: string | null } = await res.json();
       if (!data.day || data.requestsThatDay === 0) return;
       // The API sends a plain date like 2026-10-05T00:00:00; read it as that calendar day, not a moment in time.
       const day = new Date(`${data.day.slice(0, 10)}T00:00:00Z`).toLocaleDateString('en-CA', { month: 'long', day: 'numeric', timeZone: 'UTC' });
       const count = data.requestsThatDay.toLocaleString('en-CA');
+      // Prefer the spelled-out name ("Waste & Recycling Services: Cart Management") over the code ("WRS - ...").
+      const top = data.topServiceThatDayDescription ?? data.topServiceThatDay;
       el.textContent = `Live from the app: Calgarians made ${count} requests to 311 on ${day}.` +
-        (data.topServiceThatDay ? ` The most common was ${data.topServiceThatDay}.` : '');
+        (top ? ` The most common was ${top}.` : '');
       el.hidden = false;
     } catch {
       // Leave it hidden.
