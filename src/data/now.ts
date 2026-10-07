@@ -6,6 +6,7 @@ export const now = {
     'Learning C# and .NET, coming from Java',
     'Building this site and adding features to the Calgary 311 Explorer',
     'Working on Valorant Analyst',
+    'Building a secret project (more soon)',
     'Playing Valorant',
   ],
 };
