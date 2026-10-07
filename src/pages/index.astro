@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import Background from '../components/Background.astro';
+import Hero from '../components/Hero.astro';
+import Work from '../components/Work.astro';
+import Experience from '../components/Experience.astro';
+import Contact from '../components/Contact.astro';
+---
+<Base
+  title="Tavish Handa"
+  description="Tavish Handa, Computer Science graduate in Calgary. Web apps, data and ML projects, and IT support."
+>
+  <Background />
+  <main>
+    <nav>
+      <span class="mono">Tavish Handa · Calgary, AB</span>
+      <div class="links">
+        <a href="#work">Work</a>
+        <a href="#experience">Experience</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+    <Hero />
+    <Work />
+    <Experience />
+    <Contact />
+  </main>
+</Base>
+
+<style>
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-block: 22px;
+  }
+  .links { display: flex; gap: 20px; }
+  .links a { text-decoration: none; font-size: 14px; color: var(--muted); }
+  .links a:hover { color: var(--ink); }
+</style>

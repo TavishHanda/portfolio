@@ -1,0 +1,85 @@
+/* Colors and fonts live here as variables so every component uses the same set.
+   Dark mode just swaps the color values. */
+:root {
+  --bg: #f3f4f1;
+  --ink: #121314;
+  --muted: #5d625f;
+  --line: #d9dcd6;
+  --card: #ffffff;
+  --accent: #2f43ff;
+  --accent-soft: #e3e6ff;
+  --f-display: "Archivo", "Arial Narrow", Arial, sans-serif;
+  --f-body: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --gut: clamp(16px, 4vw, 48px);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1012;
+    --ink: #ecedea;
+    --muted: #9a9e9a;
+    --line: #26282b;
+    --card: #17181b;
+    --accent: #8a97ff;
+    --accent-soft: #1d2140;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.6;
+  padding-inline: var(--gut);
+  overflow-x: hidden;
+}
+a { color: inherit; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+main { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; }
+
+.mono {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.tag {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.sec-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 16px;
+  border-top: 1.5px solid var(--ink);
+  padding-top: 14px;
+  margin-bottom: 40px;
+}
+.sec-head h2 {
+  font-family: var(--f-display);
+  font-variation-settings: "wdth" 110;
+  font-weight: 800;
+  font-size: clamp(28px, 4vw, 44px);
+  letter-spacing: -.02em;
+  line-height: 1;
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; }
+}

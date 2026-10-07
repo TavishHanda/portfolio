@@ -1,0 +1,27 @@
+---
+import { experience } from '../data/experience';
+---
+<section id="experience">
+  <div class="sec-head"><h2>Experience</h2><span class="mono">2023 to now</span></div>
+  <div class="xp">
+    {experience.map((job) => (
+      <article>
+        <span class="mono">{job.when}</span>
+        <h3>{job.title}</h3>
+        <p>{job.body}</p>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .xp {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    padding-bottom: 100px;
+  }
+  article { border-top: 1px solid var(--line); padding-top: 18px; }
+  h3 { font-family: var(--f-display); font-weight: 750; font-size: 22px; margin: 6px 0 8px; }
+  p { margin: 0; color: var(--muted); }
+</style>

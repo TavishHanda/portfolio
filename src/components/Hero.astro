@@ -1,0 +1,61 @@
+---
+---
+<header class="hero">
+  <h1 id="hero-title"><span>Tavish</span><span>Handa<span class="dot">.</span></span></h1>
+  <div class="sub">
+    <p><b>Computer Science, University of Calgary, 2026.</b> I write software and I fix the hardware it runs on.</p>
+    <p>Web apps, data and ML projects, a few client sites, and three seasons keeping the Stampede's payment systems running.</p>
+  </div>
+  <div class="cta">
+    <a class="btn solid" href="#work">See my work</a>
+    <a class="btn" href="https://github.com/TavishHanda">GitHub</a>
+  </div>
+</header>
+
+<style>
+  .hero { padding-block: clamp(48px, 10vw, 120px) clamp(56px, 9vw, 110px); }
+  h1 {
+    font-family: var(--f-display);
+    font-variation-settings: "wdth" 125;
+    font-weight: 850;
+    font-size: clamp(64px, 15vw, 200px);
+    line-height: .86;
+    letter-spacing: -.035em;
+    margin: 0;
+    transform-origin: left top;
+    will-change: transform;
+  }
+  h1 span { display: block; }
+  h1 .dot { display: inline; color: var(--accent); }
+  .sub {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 28px;
+    margin-top: 40px;
+    max-width: 900px;
+  }
+  .sub p { margin: 0; font-size: 18px; color: var(--muted); max-width: 44ch; }
+  .sub b { color: var(--ink); font-weight: 500; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+  .btn {
+    font: 500 14px var(--f-body);
+    padding: 11px 18px;
+    border-radius: 999px;
+    border: 1.5px solid var(--ink);
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .btn.solid { background: var(--ink); color: var(--bg); }
+  .btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+</style>
+
+<script>
+  // Shrink the name a little as you scroll past it.
+  const title = document.getElementById('hero-title')!;
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    addEventListener('scroll', () => {
+      const p = Math.min(1, scrollY / 500);
+      title.style.transform = `scale(${1 - p * 0.12}) translateY(${p * -20}px)`;
+    }, { passive: true });
+  }
+</script>
