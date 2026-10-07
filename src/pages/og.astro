@@ -1,0 +1,84 @@
+---
+// The link preview image (what shows up when the site is shared on LinkedIn, Discord, etc.).
+// This page is laid out at exactly 1200 x 630 and turned into public/og.png by `npm run og`.
+// It's not linked from anywhere and asks search engines not to index it.
+import { scenes } from '../lib/scenes';
+
+const lines = Array.from({ length: 16 }, (_, i) => {
+  const y0 = 60 + i * 36;
+  const pts = Array.from({ length: 61 }, (_, j) => {
+    const x = j * 20;
+    const y = y0 + Math.sin(x * 0.004 + i * 0.35) * 18 + Math.sin(x * 0.011 + i * 0.6) * 8;
+    return `${x},${y.toFixed(1)}`;
+  });
+  return pts.join(' ');
+});
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>Preview image</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Geist:wght@400;500&display=swap"
+    />
+    <style>
+      html, body { margin: 0; background: #0f1012; }
+      .card {
+        position: relative;
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+        background: #0f1012;
+        color: #ecedea;
+        font-family: "Geist", system-ui, sans-serif;
+      }
+      .lines { position: absolute; inset: 0; }
+      .text { position: absolute; left: 72px; top: 92px; width: 600px; }
+      h1 {
+        margin: 0;
+        font-family: "Archivo", sans-serif;
+        font-variation-settings: "wdth" 125;
+        font-weight: 850;
+        font-size: 132px;
+        line-height: .86;
+        letter-spacing: -.035em;
+      }
+      h1 span { display: block; }
+      .dot { display: inline !important; color: #8a97ff; }
+      p { margin: 34px 0 0; font-size: 28px; line-height: 1.4; color: #9a9e9a; max-width: 30ch; }
+      p b { color: #ecedea; font-weight: 500; }
+      .url { position: absolute; left: 72px; bottom: 56px; font-size: 22px; color: #8a97ff; }
+      .scene {
+        position: absolute;
+        right: 44px;
+        top: 160px;
+        width: 450px;
+        border-radius: 22px;
+        overflow: hidden;
+        transform: rotate(2deg);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, .45);
+      }
+      .scene svg { display: block; width: 100%; height: auto; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <svg class="lines" viewBox="0 0 1200 630" aria-hidden="true">
+        {lines.map((pts) => <polyline points={pts} fill="none" stroke="#26282b" stroke-width="1.5" />)}
+      </svg>
+      <div class="text">
+        <h1><span>Tavish</span><span>Handa<span class="dot">.</span></span></h1>
+        <p><b>Software developer in Calgary.</b> Web apps, data projects, and IT.</p>
+      </div>
+      <div class="url">tavishhanda.github.io/portfolio</div>
+      <div class="scene">
+        <svg viewBox="0 0 320 180" set:html={scenes['calgary-311-explorer']()} />
+      </div>
+    </div>
+  </body>
+</html>

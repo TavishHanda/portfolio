@@ -7,6 +7,9 @@ interface Props {
 }
 const { title, description } = Astro.props;
 const base = import.meta.env.BASE_URL;
+// Link previews need full URLs, so build them from `site` in astro.config.mjs.
+const pageUrl = new URL(base.replace(/\/?$/, '/'), Astro.site).href;
+const imageUrl = new URL(`${base.replace(/\/$/, '')}/og.png`, Astro.site).href;
 ---
 <!doctype html>
 <html lang="en">
@@ -17,6 +20,13 @@ const base = import.meta.env.BASE_URL;
     <meta name="description" content={description} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Tavish Handa, software developer in Calgary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/svg+xml" href={`${base.replace(/\/$/, '')}/favicon.svg`} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

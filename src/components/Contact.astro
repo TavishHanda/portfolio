@@ -1,8 +1,15 @@
 ---
+const email = 'tavishhanda@hotmail.com';
+const resume = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/Tavish_Handa_Resume.pdf`;
 ---
 <section id="contact">
   <div class="sec-head"><h2>Contact</h2><span class="mono">Open to roles in Calgary and remote</span></div>
+  <div class="email">
+    <a href={`mailto:${email}`}>{email}</a>
+    <button type="button" id="copy-email" data-email={email}>Copy</button>
+  </div>
   <p class="huge">
+    <a href={resume} target="_blank" rel="noopener">Resume</a><br />
     <a href="https://github.com/TavishHanda">GitHub</a><br />
     <a href="https://www.linkedin.com/in/tavish-handa">LinkedIn</a>
   </p>
@@ -10,6 +17,33 @@
 
 <style>
   section { padding-block: 40px 120px; }
+  .email {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 16px;
+    margin-bottom: 36px;
+  }
+  .email a {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: clamp(22px, 4vw, 40px);
+    letter-spacing: -.01em;
+    overflow-wrap: anywhere;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+  }
+  .email button {
+    font: 500 14px var(--f-body);
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1.5px solid var(--line);
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .email button:hover { border-color: var(--accent); color: var(--accent); }
   .huge {
     font-family: var(--f-display);
     font-variation-settings: "wdth" 125;
@@ -22,3 +56,20 @@
   a { text-decoration: none; }
   a:hover { color: var(--accent); }
 </style>
+
+<script>
+  // Copy the email address, since some visitors have no mail app set up for mailto: links.
+  const button = document.getElementById('copy-email') as HTMLButtonElement;
+  button.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(button.dataset.email ?? '');
+      button.textContent = 'Copied';
+    } catch {
+      button.textContent = 'Press Ctrl+C';
+      const selection = getSelection();
+      const link = button.previousElementSibling;
+      if (selection && link) selection.selectAllChildren(link);
+    }
+    setTimeout(() => (button.textContent = 'Copy'), 2000);
+  });
+</script>
