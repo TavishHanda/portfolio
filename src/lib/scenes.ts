@@ -53,14 +53,14 @@ function calgary311() {
   // The Calgary Tower.
   const tk = s.cylZ(17.4, 5.4, 0, 0.55, 11, '#d6d9de', 25);
   s.cylZ(17.4, 5.4, 11, 1.5, 1.2, '#3a404b', tk + 0.01);
-  s.cylZ(17.4, 5.4, 12.2, 1.0, 0.6, '#e8443a', tk + 0.02);
+  s.group(tk + 0.02, 'a-blink', () => s.cylZ(17.4, 5.4, 12.2, 1.0, 0.6, '#e8443a', 0));
   s.line([[17.4, 5.4, 12.8], [17.4, 5.4, 15.2]], '#3a404b', 1, tk + 0.03);
 
   // Service requests showing up as map pins.
-  s.pin(7.5, 2.5, 10.8, BLUE);
-  s.pin(2.8, 12.5, 6.4, '#e8443a');
-  s.pin(15, 12.5, 5.4, BLUE);
-  s.pin(11, 3, 2.4, '#e8443a');
+  s.pin(7.5, 2.5, 10.8, BLUE, 200, 0);
+  s.pin(11, 3, 2.4, '#e8443a', 200, 1);
+  s.pin(2.8, 12.5, 6.4, '#e8443a', 200, 2);
+  s.pin(15, 12.5, 5.4, BLUE, 200, 3);
   return s.render('#e6ebf2');
 }
 
@@ -75,7 +75,10 @@ function clinicScheduler() {
   for (let c = 0; c < 5; c++) {
     for (let r = 0; r < 4; r++) {
       const fill = booked[`${c},${r}`] ?? '#eef1f5';
-      s.wallY(2.5 + c * 2.42 + 0.08, 3.43, 4.1 + r * 1.3 + 0.08, 2.26, 1.14, fill, k + 0.03);
+      const cell = () => s.wallY(2.5 + c * 2.42 + 0.08, 3.43, 4.1 + r * 1.3 + 0.08, 2.26, 1.14, fill, k + 0.03);
+      // The selected (blue) slot is the "new booking" that pops in when the card is active.
+      if (fill === BLUE) s.group(k + 0.03, 'a-pop', cell);
+      else cell();
     }
   }
 
@@ -96,6 +99,7 @@ function clinicScheduler() {
   // Mug and plant.
   const mk = s.cylZ(19, 9.5, 0, 1.15, 2.2, '#ffffff', 28.6);
   s.disc(19, 9.5, 2.21, 0.95, '#6b4226', mk + 0.01);
+  s.steam(19, 9.5, 2.6, mk + 0.05);
   s.line([[20.1, 9.5, 1.8], [20.9, 9.5, 1.6], [20.9, 9.5, 0.8], [20.1, 9.5, 0.6]], '#c9ced6', 3, mk + 0.02);
   s.line([[20.1, 9.5, 1.8], [20.9, 9.5, 1.6], [20.9, 9.5, 0.8], [20.1, 9.5, 0.6]], '#ffffff', 1.8, mk + 0.03);
   const pk = s.cylZ(19, 3, 0, 1.3, 2, '#5b6b8c', 22);
@@ -124,6 +128,9 @@ function taskSync() {
     ['#2f43ff', '#ffcf33'],
     ['#16a34a'],
   ];
+  // How far one column to the right and one card up is on screen, for the sliding card.
+  const [ax, ay] = s.p(0, 0, 0);
+  const [bx, by] = s.p(3.15, 0, 1.2);
   cols.forEach((cards, c) => {
     const cx = 3.35 + c * 3.15;
     s.wallY(cx, 6.52, 1.4, 3.0, 4.8, '#e3e8f0', k + 0.02);
@@ -133,6 +140,11 @@ function taskSync() {
       s.wallY(cx + 0.2, 6.54, z + 0.8, 2.6, 0.15, color, k + 0.04);
     });
   });
+  s.group(k + 0.05, 'a-move', () => {
+    const cx = 3.35 + 3.15;
+    s.wallY(cx + 0.2, 6.55, 2.7, 2.6, 0.95, '#ffffff', 0);
+    s.wallY(cx + 0.2, 6.56, 3.5, 2.6, 0.15, '#ff6c2f', 0.01);
+  }, `--dx:${(bx - ax).toFixed(1)}px;--dy:${(by - ay).toFixed(1)}px`);
 
   // Sticky notes with a finished task.
   s.box(15.5, 10, 0, 4.2, 4.2, 0.25, '#f5c518', 30);
@@ -183,6 +195,7 @@ function acadiaPizza() {
     s.disc(15.75 + dx, 10.75 + dy, 0.94, 0.45, '#b8291e', bk + 0.04);
   }
   for (const [dx, dy] of [[-0.8, 0.2], [1.2, -0.5], [0.6, 0.9]]) s.disc(15.75 + dx, 10.75 + dy, 0.95, 0.22, '#2f8f4e', bk + 0.05);
+  s.steam(15.75, 10.75, 2.2, bk + 0.1);
 
   // Database: three stacked tiers.
   for (const [i, z] of [0, 1.25, 2.5].entries()) s.cylZ(19.6, 2.8, z, 1.7, 1, BLUE, 22 + i * 0.01);
@@ -209,7 +222,7 @@ function valorantAnalyst() {
   const rounds = 'wwlwlwwlwwlwlwwlwlwwlw';
   rounds.split('').forEach((r, i) => {
     const h = r === 'w' ? 1.6 + ((i * 37) % 23) / 10 : 0.8 + ((i * 13) % 9) / 10;
-    s.wallY(2.6 + i * 0.6, 3.42, 4.8, 0.42, h, r === 'w' ? TEAL : RED, k + 0.02);
+    s.group(k + 0.02, 'a-bar', () => s.wallY(2.6 + i * 0.6, 3.42, 4.8, 0.42, h, r === 'w' ? TEAL : RED, 0), `--i:${i}`);
     s.wallY(2.6 + i * 0.6, 3.42, 4.0, 0.42, 0.42, r === 'w' ? TEAL : RED, k + 0.02);
   });
 
@@ -221,7 +234,7 @@ function valorantAnalyst() {
       s.top(2.8 + i * 0.72, 9.85 + j * 0.64, 0.68, 0.55, 0.48, wasd.has(`${i},${j}`) ? RED : '#3a404b', kk + 0.01);
     }
   }
-  s.line([[2.5, 13.2, 0.13], [13, 13.2, 0.13]], RED, 1.2, kk + 0.02, 'opacity=".7"');
+  s.line([[2.5, 13.2, 0.13], [13, 13.2, 0.13]], RED, 1.2, kk + 0.02, 'class="a-glow" opacity=".7"');
 
   // Mouse and a can.
   const mo = s.box(16.4, 10.2, 0.12, 1.8, 2.8, 0.75, '#252a33', 27);
@@ -256,7 +269,8 @@ function turbineInspection() {
       return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#a7b0bd" stroke-width="1.3" stroke-linecap="round"/>`;
     })
     .join('');
-  s.add(ek + 0.04, blades);
+  const [fx, fy] = s.p(16.62, 9, 4.6);
+  s.add(ek + 0.04, `<g class="a-fan" data-cx="${fx}" data-cy="${fy}" data-s="5.5">${blades}</g>`);
   s.discX(16.63, 9, 4.6, 0.8, '#e9edf2', ek + 0.05);
   s.discX(16.64, 9, 4.6, 0.25, '#2a303b', ek + 0.06);
 

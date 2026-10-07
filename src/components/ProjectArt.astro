@@ -1,7 +1,7 @@
 ---
 // The illustration at the top of each featured project card.
-// Scenes are drawn at build time from src/lib/scenes.ts, so the page
-// ships plain SVG with no images and no JavaScript.
+// Scenes are drawn at build time from src/lib/scenes.ts. Parts tagged with
+// an "a-..." class come alive (below) only while their card is the active one.
 import { scenes } from '../lib/scenes';
 
 interface Props {
@@ -30,11 +30,80 @@ const draw = scenes[id];
     height: 100%;
     transition: transform .6s cubic-bezier(.2, .7, .2, 1);
   }
-  /* The active card's scene eases in a touch closer. */
   :global(.card.on) svg { transform: scale(1.04); }
+</style>
+
+<style is:global>
+  /* Everything sits still until its card is active, so the page is complete at rest. */
+  .art .a-pop, .art .a-bar { transform-box: fill-box; }
+  .art .a-pop { transform-origin: center; }
+  .art .a-bar { transform-origin: bottom; }
+  .art .a-steam { opacity: 0; }
+
+  .card.on .art .a-pin { animation: art-drop .7s cubic-bezier(.3, 1.6, .5, 1) both; animation-delay: calc(var(--i) * .18s); }
+  .card.on .art .a-blink { animation: art-blink 1.4s steps(1) infinite; }
+  .card.on .art .a-pop { animation: art-pop .6s .5s cubic-bezier(.3, 1.6, .5, 1) both; }
+  .card.on .art .a-steam { animation: art-steam 2.4s ease-out infinite; animation-delay: calc(var(--i) * .7s); }
+  .card.on .art .a-move { animation: art-move 4s ease-in-out infinite; }
+  .card.on .art .a-bar { animation: art-grow .8s cubic-bezier(.2, .7, .2, 1) both; animation-delay: calc(var(--i) * .04s); }
+  .card.on .art .a-glow { animation: art-glow 2s ease-in-out infinite; }
+
+  @keyframes art-drop { from { transform: translateY(-14px); opacity: 0; } to { transform: none; opacity: 1; } }
+  @keyframes art-blink { 50% { opacity: .25; } }
+  @keyframes art-pop { from { transform: scale(0); } to { transform: none; } }
+  @keyframes art-steam {
+    0% { transform: translateY(4px); opacity: 0; }
+    30% { opacity: .85; }
+    100% { transform: translateY(-10px); opacity: 0; }
+  }
+  @keyframes art-move {
+    0%, 25% { transform: none; }
+    55%, 85% { transform: translate(var(--dx), var(--dy)); }
+    100% { transform: none; }
+  }
+  @keyframes art-grow { from { transform: scaleY(0); } to { transform: none; } }
+  @keyframes art-glow { 50% { opacity: .2; } }
 
   @media (prefers-reduced-motion: reduce) {
-    svg { transition: none; }
-    :global(.card.on) svg { transform: none; }
+    .card.on .art * { animation: none !important; }
+    .card.on .art svg { transform: none; }
   }
 </style>
+
+<script>
+  // Spin the turbine fan while its card is active. The blades sit on a tilted
+  // circle, so each frame recomputes the blade lines in that circle's plane
+  // rather than rotating the picture flat.
+  const fans = document.querySelectorAll<SVGGElement>('.a-fan');
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const COS = Math.cos(Math.PI / 6);
+
+  fans.forEach((fan) => {
+    if (still) return;
+    const card = fan.closest('.card');
+    const lines = [...fan.querySelectorAll('line')];
+    const cx = Number(fan.dataset.cx);
+    const cy = Number(fan.dataset.cy);
+    const s = Number(fan.dataset.s);
+    // One unit along the circle's two axes (world y and world z), in screen pixels.
+    const point = (a: number, r: number) => [cx - r * Math.cos(a) * COS * s, cy + r * Math.cos(a) * 0.5 * s - r * Math.sin(a) * s];
+    let spin = 0;
+
+    const frame = () => {
+      if (card?.classList.contains('on')) {
+        spin += 0.03;
+        lines.forEach((line, i) => {
+          const a = spin + (i / lines.length) * Math.PI * 2;
+          const [x1, y1] = point(a, 0.8);
+          const [x2, y2] = point(a + 0.4, 2.85);
+          line.setAttribute('x1', String(x1));
+          line.setAttribute('y1', String(y1));
+          line.setAttribute('x2', String(x2));
+          line.setAttribute('y2', String(y2));
+        });
+      }
+      requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  });
+</script>

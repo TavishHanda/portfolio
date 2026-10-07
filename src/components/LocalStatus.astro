@@ -1,0 +1,55 @@
+---
+// "4:12 pm in Calgary, −3° and snowing" in the nav.
+// The time is the visitor's clock shown in Calgary's time zone; the weather comes
+// from Open-Meteo (free, no key). If the weather call fails, only the time shows.
+---
+<span class="status" id="local-status">Calgary, AB</span>
+
+<style>
+  .status { font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+</style>
+
+<script>
+  const el = document.getElementById('local-status')!;
+  let weather = '';
+
+  // Open-Meteo reports conditions as WMO weather codes.
+  function describe(code: number): string {
+    if (code === 0) return 'clear';
+    if (code <= 2) return 'partly cloudy';
+    if (code === 3) return 'cloudy';
+    if (code === 45 || code === 48) return 'foggy';
+    if (code >= 51 && code <= 57) return 'drizzling';
+    if ((code >= 61 && code <= 67) || (code >= 80 && code <= 82)) return 'raining';
+    if ((code >= 71 && code <= 77) || code === 85 || code === 86) return 'snowing';
+    if (code >= 95) return 'stormy';
+    return '';
+  }
+
+  function render() {
+    const time = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Edmonton', hour: 'numeric', minute: '2-digit' })
+      .format(new Date())
+      .replace(/\./g, '');
+    el.textContent = weather ? `${time} in Calgary, ${weather}` : `${time} in Calgary`;
+  }
+
+  async function loadWeather() {
+    try {
+      const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=51.05&longitude=-114.07&current=temperature_2m,weather_code');
+      if (!res.ok) return;
+      const data = await res.json();
+      const temp = Math.round(data.current.temperature_2m);
+      const sky = describe(data.current.weather_code);
+      // A real minus sign reads better than a hyphen.
+      const degrees = `${temp < 0 ? '−' : ''}${Math.abs(temp)}°`;
+      weather = sky ? `${degrees} and ${sky}` : degrees;
+      render();
+    } catch {
+      // No weather is fine; the time still shows.
+    }
+  }
+
+  render();
+  setInterval(render, 30_000);
+  loadWeather();
+</script>

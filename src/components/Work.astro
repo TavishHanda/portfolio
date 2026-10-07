@@ -25,6 +25,7 @@ const first = projects[0].data;
             <ProjectArt id={p.id} />
             <h3>{p.data.title}</h3>
             <div class="mono meta">{p.data.meta}</div>
+            {p.data.liveSummaryUrl && <p class="live" data-url={p.data.liveSummaryUrl} hidden></p>}
             <div class="body"><Content /></div>
             <div class="tags">{p.data.tags.map((t) => <span class="tag">{t}</span>)}</div>
             {p.data.links.length > 0 && (
@@ -79,6 +80,27 @@ const first = projects[0].data;
     margin: 0 0 6px;
   }
   .meta { margin-bottom: 12px; }
+  .live {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    margin: 0 0 14px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: var(--accent-soft);
+    color: var(--ink);
+    font-size: 15px;
+  }
+  .live::before {
+    content: '';
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #16a34a;
+    transform: translateY(-1px);
+  }
+  .live[hidden] { display: none; }
   .body :global(p) { margin: 0; color: var(--muted); max-width: 60ch; }
   .card .tags { margin-top: 16px; }
   .links { display: flex; gap: 18px; margin-top: 16px; font-size: 14px; font-weight: 500; }
@@ -117,6 +139,25 @@ const first = projects[0].data;
   }
 
   setActive(0);
+
+  // Live numbers from a project's own API (the 311 app's /api/summary). Stays hidden
+  // unless real numbers come back, so a sleeping or unreachable app just shows nothing.
+  document.querySelectorAll<HTMLElement>('.live[data-url]').forEach(async (el) => {
+    try {
+      const res = await fetch(el.dataset.url!, { signal: AbortSignal.timeout(30_000) });
+      if (!res.ok) return;
+      const data: { day: string | null; requestsThatDay: number; topServiceThatDay: string | null } = await res.json();
+      if (!data.day || data.requestsThatDay === 0) return;
+      // The API sends a plain date like 2026-10-05T00:00:00; read it as that calendar day, not a moment in time.
+      const day = new Date(`${data.day.slice(0, 10)}T00:00:00Z`).toLocaleDateString('en-CA', { month: 'long', day: 'numeric', timeZone: 'UTC' });
+      const count = data.requestsThatDay.toLocaleString('en-CA');
+      el.textContent = `Live from the app: Calgarians made ${count} requests to 311 on ${day}.` +
+        (data.topServiceThatDay ? ` The most common was ${data.topServiceThatDay}.` : '');
+      el.hidden = false;
+    } catch {
+      // Leave it hidden.
+    }
+  });
   // The -45% margins shrink the "viewport" to a thin band across the middle,
   // so a card counts as active only when it crosses that band.
   const observer = new IntersectionObserver(

@@ -44,6 +44,29 @@ export class Scene {
     this.items.push({ k, svg });
   }
 
+  /**
+   * Wrap everything drawn inside `draw` in one <g> with a class, so CSS can animate it as a unit.
+   * The group is drawn at depth k.
+   */
+  group(k: number, cls: string, draw: () => void, style = '') {
+    const before = this.items.length;
+    draw();
+    const inner = this.items.splice(before).sort((a, b) => a.k - b.k).map((i) => i.svg).join('');
+    this.add(k, `<g class="${cls}" style="${style}">${inner}</g>`);
+  }
+
+  /** Wisps of steam rising from a point, animated by CSS when the card is active. */
+  steam(x: number, y: number, z: number, k: number) {
+    const [px, py] = this.p(x, y, z);
+    const wisps = [-4, 0, 4]
+      .map((dx, i) => {
+        const sx = px + dx;
+        return `<path class="a-steam" style="--i:${i}" d="M${f(sx)} ${f(py)}c-3-4 3-7 0-11s3-7 0-11" fill="none" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" opacity=".85"/>`;
+      })
+      .join('');
+    this.add(k, wisps);
+  }
+
   poly(list: V3[], fill: string, k: number, extra = '') {
     this.add(k, `<polygon points="${this.pts(list)}" fill="${fill}" stroke="${fill}" stroke-width=".3" stroke-linejoin="round" ${extra}/>`);
   }
@@ -159,15 +182,15 @@ export class Scene {
   }
 
   /** Map pin hovering at a world point, drawn flat to the screen. */
-  pin(x: number, y: number, z: number, color: string, k = 200) {
+  pin(x: number, y: number, z: number, color: string, k = 200, order = 0) {
     const [px, py] = this.p(x, y, z);
     const [gx, gy] = this.p(x, y, z - 2.2);
     this.add(
       k,
-      `<line x1="${f(px)}" y1="${f(py)}" x2="${f(gx)}" y2="${f(gy)}" stroke="${color}" stroke-width="1" stroke-dasharray="1.5 2"/>` +
+      `<g class="a-pin" style="--i:${order}"><line x1="${f(px)}" y1="${f(py)}" x2="${f(gx)}" y2="${f(gy)}" stroke="${color}" stroke-width="1" stroke-dasharray="1.5 2"/>` +
         `<ellipse cx="${f(gx)}" cy="${f(gy)}" rx="3" ry="1.6" fill="${color}" opacity=".35"/>` +
         `<path d="M${f(px)} ${f(py)}C${f(px - 2)} ${f(py - 4)} ${f(px - 6)} ${f(py - 7)} ${f(px - 6)} ${f(py - 11)}A6 6 0 1 1 ${f(px + 6)} ${f(py - 11)}C${f(px + 6)} ${f(py - 7)} ${f(px + 2)} ${f(py - 4)} ${f(px)} ${f(py)}Z" fill="${color}" stroke="${shade(color, -0.3)}" stroke-width=".6"/>` +
-        `<circle cx="${f(px)}" cy="${f(py - 11)}" r="2.3" fill="#fff"/>`,
+        `<circle cx="${f(px)}" cy="${f(py - 11)}" r="2.3" fill="#fff"/></g>`,
     );
   }
 

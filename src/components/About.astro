@@ -1,5 +1,6 @@
 ---
 import fs from 'node:fs';
+import { now } from '../data/now';
 
 // Drop a photo at public/me.jpg and it shows up automatically.
 // Until then the photo slot is left out instead of showing a placeholder.
@@ -38,6 +39,11 @@ const facts = [
 
     <aside>
       {hasPhoto && <img class="photo" src={`${base}/me.jpg`} alt="Tavish Handa" width="480" height="600" />}
+      <div class="now">
+        <h3>Now</h3>
+        <ul>{now.items.map((item) => <li>{item}</li>)}</ul>
+        <p class="updated">Updated {now.updated}</p>
+      </div>
       <dl>
         {facts.map((f) => (
           <div>
@@ -76,6 +82,37 @@ const facts = [
     border-radius: 18px;
     margin-bottom: 24px;
   }
+  .now {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 24px;
+  }
+  .now h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 10px;
+    font-family: var(--f-display);
+    font-weight: 750;
+    font-size: 18px;
+  }
+  /* A small live dot, the same idea as the live 311 numbers. */
+  .now h3::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #16a34a;
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, .5);
+    animation: now-pulse 2.4s ease-out infinite;
+  }
+  .now ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+  .updated { margin: 12px 0 0; font-size: 13px; color: var(--muted); }
+  @keyframes now-pulse { 70% { box-shadow: 0 0 0 8px rgba(22, 163, 74, 0); } 100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); } }
+  @media (prefers-reduced-motion: reduce) { .now h3::before { animation: none; } }
+
   dl { margin: 0; }
   dl div { padding-block: 12px; border-top: 1px solid var(--line); }
   dl div:last-child { border-bottom: 1px solid var(--line); }

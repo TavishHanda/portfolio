@@ -5,6 +5,7 @@ meta: Solo project, live since 2026
 tags: [C#, ASP.NET Core, Azure]
 order: 1
 featured: true
+liveSummaryUrl: https://calgary-311-explorer-aae0dnhnheb2ezf9.westus-01.azurewebsites.net/api/summary
 links:
   - label: Live site
     href: https://calgary-311-explorer-aae0dnhnheb2ezf9.westus-01.azurewebsites.net

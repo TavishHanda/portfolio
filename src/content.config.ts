@@ -15,6 +15,7 @@ const projects = defineCollection({
     order: z.number(),        // lower numbers show first
     featured: z.boolean(),    // true = big scrolling card, false = "More projects" list
     summary: z.string().optional(), // one line for the "More projects" list
+    liveSummaryUrl: z.string().url().optional(), // an /api/summary endpoint to show live numbers from
     links: z
       .array(z.object({ label: z.string(), href: z.string().url() }))
       .default([]),

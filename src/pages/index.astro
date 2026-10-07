@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Background from '../components/Background.astro';
+import LocalStatus from '../components/LocalStatus.astro';
 import Hero from '../components/Hero.astro';
 import Work from '../components/Work.astro';
 import MoreProjects from '../components/MoreProjects.astro';
@@ -15,7 +16,7 @@ import Contact from '../components/Contact.astro';
   <Background />
   <main>
     <nav>
-      <span class="mono">Tavish Handa, Calgary</span>
+      <div class="who"><span class="name">Tavish Handa</span><LocalStatus /></div>
       <div class="links">
         <a href="#work">Work</a>
         <a href="#about">About</a>
@@ -41,6 +42,8 @@ import Contact from '../components/Contact.astro';
     gap: 16px;
     padding-block: 22px;
   }
+  .who { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
+  .name { font-size: 14px; font-weight: 500; }
   .links { display: flex; gap: 20px; }
   .links a { text-decoration: none; font-size: 14px; color: var(--muted); }
   .links a:hover { color: var(--ink); }
