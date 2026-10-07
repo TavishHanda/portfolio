@@ -1,0 +1,88 @@
+---
+import fs from 'node:fs';
+
+// Drop a photo at public/me.jpg and it shows up automatically.
+// Until then the photo slot is left out instead of showing a placeholder.
+const hasPhoto = fs.existsSync('public/me.jpg');
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const facts = [
+  { label: 'Based in', value: 'Calgary, AB' },
+  { label: 'Looking for', value: 'Software, IT, and data roles, in Calgary or remote' },
+  { label: 'Learning', value: 'C# and .NET' },
+  { label: 'Studied', value: 'BSc Computer Science, University of Calgary' },
+  { label: 'Off the clock', value: 'Basketball, music, anime, hiking' },
+];
+---
+<section id="about">
+  <div class="sec-head"><h2>About</h2><span class="mono">Left-handed, for the record</span></div>
+  <div class="about">
+    <div class="story">
+      <p class="lead">
+        I got into computers by watching my older cousins play StarCraft. One of them played semi-pro, and I'd sit
+        next to him for hours before jumping on the PC myself. I've been the computer kid ever since, and I started
+        writing code in high school.
+      </p>
+      <p>
+        These days I mostly build web apps: a dashboard over Calgary's 311 data, a task manager on Firebase, an
+        ordering system for a local pizza shop. I like taking an idea all the way to a live link people can use.
+        I like the hardware side too, which is why I spend my summers keeping the payment systems running at the
+        Stampede.
+      </p>
+      <p>
+        Outside of code, I've played basketball since middle school, I listen to everything from hip hop and R&amp;B
+        to indie, I watch a lot of anime, and I get out to the mountains for hikes whenever I can. I also peaked
+        Immortal in Valorant.
+      </p>
+    </div>
+
+    <aside>
+      {hasPhoto && <img class="photo" src={`${base}/me.jpg`} alt="Tavish Handa" width="480" height="600" />}
+      <dl>
+        {facts.map((f) => (
+          <div>
+            <dt class="mono">{f.label}</dt>
+            <dd>{f.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .about {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: clamp(24px, 5vw, 72px);
+    padding-bottom: 100px;
+  }
+  .story p { margin: 0 0 1.1em; color: var(--muted); font-size: 17px; max-width: 62ch; }
+  .story .lead {
+    color: var(--ink);
+    font-family: var(--f-display);
+    font-variation-settings: "wdth" 100;
+    font-weight: 600;
+    font-size: clamp(22px, 2.4vw, 28px);
+    line-height: 1.3;
+    letter-spacing: -.01em;
+  }
+  .photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 18px;
+    margin-bottom: 24px;
+  }
+  dl { margin: 0; }
+  dl div { padding-block: 12px; border-top: 1px solid var(--line); }
+  dl div:last-child { border-bottom: 1px solid var(--line); }
+  dt { margin-bottom: 2px; }
+  dd { margin: 0; }
+
+  @media (max-width: 820px) {
+    .about { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
