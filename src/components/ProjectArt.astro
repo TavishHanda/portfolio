@@ -1,262 +1,40 @@
 ---
-// A two-ink "risograph print" for each featured project.
-// Every print uses the site blue as ink A plus its own second ink (ink B).
-// Ink B is multiplied over ink A, so where they overlap they mix like real
-// printing ink, and it sits slightly out of register until the card is active.
+// The illustration at the top of each featured project card.
+// Scenes are drawn at build time from src/lib/scenes.ts, so the page
+// ships plain SVG with no images and no JavaScript.
+import { scenes } from '../lib/scenes';
+
 interface Props {
   id: string;
 }
 const { id } = Astro.props;
-
-const inkB: Record<string, string> = {
-  'calgary-311-explorer': '#ff48b0',
-  'clinic-scheduler': '#00a95c',
-  'task-sync': '#ffe100',
-  'acadia-pizza': '#ff6c2f',
-  'valorant-analyst': '#f15060',
-  'turbine-inspection-site': '#3fc4e8',
-};
-
-// Turbine blades and pizza slices are drawn around a circle.
-const blades = Array.from({ length: 14 }, (_, i) => (i * 360) / 14);
-const slices = [0, 60, 120, 180, 240, 300];
-const tables = [
-  { label: 'customer', angle: 30 },
-  { label: 'order', angle: 90 },
-  { label: 'menu', angle: 150 },
-  { label: 'employee', angle: 210 },
-  { label: 'schedule', angle: 270 },
-  { label: 'items', angle: 330 },
-];
-const rad = (deg: number) => (deg * Math.PI) / 180;
-// Valorant round tracker: w = won, l = lost.
-const rounds = 'wwlwlwwlwwlww'.split('');
+const draw = scenes[id];
 ---
-<div class="print" style={`--ink-b: ${inkB[id] ?? '#ff48b0'}`} aria-hidden="true">
-  <svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice">
-    <rect class="paper" width="320" height="180" />
-
-    {id === 'calgary-311-explorer' && (
-      <Fragment>
-        <g class="ink-a">
-          <defs>
-            <pattern id="c311-a" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-              <circle cx="2" cy="2" r="1.15" fill="currentColor" />
-            </pattern>
-          </defs>
-          <path fill="url(#c311-a)" d="M0 150V128H18V112H34V132H46V100H64V122H78V92H96V140H104V118H112V150ZM132 150V108H150V86H170V120H182V96H198V130H210V104H232V124H246V112H262V136H276V118H292V132H320V150Z" />
-          <rect fill="currentColor" x="119" y="58" width="7" height="92" />
-          <rect fill="currentColor" x="110" y="49" width="25" height="10" rx="3" />
-          <rect fill="currentColor" x="114" y="43" width="17" height="6" rx="1" />
-          <line stroke="currentColor" stroke-width="2" x1="122.5" y1="22" x2="122.5" y2="43" />
-          <rect fill="currentColor" x="0" y="150" width="320" height="30" />
-          <g fill="currentColor">
-            <circle cx="40" cy="60" r="1.6" /><circle cx="70" cy="38" r="1.2" /><circle cx="160" cy="30" r="1.4" />
-            <circle cx="300" cy="64" r="1.3" /><circle cx="22" cy="88" r="1.1" />
-          </g>
-        </g>
-        <g class="ink-b">
-          <defs>
-            <pattern id="c311-b" width="5" height="5" patternUnits="userSpaceOnUse">
-              <circle cx="2.5" cy="2.5" r="1.4" fill="currentColor" />
-            </pattern>
-          </defs>
-          <circle fill="url(#c311-b)" cx="214" cy="96" r="58" />
-          <circle fill="currentColor" cx="214" cy="96" r="30" />
-          <g fill="currentColor">
-            <circle cx="24" cy="120" r="2.6" /><circle cx="56" cy="110" r="2" /><circle cx="86" cy="104" r="3" />
-            <circle cx="140" cy="98" r="2.2" /><circle cx="160" cy="112" r="2.8" /><circle cx="188" cy="104" r="1.8" />
-            <circle cx="222" cy="114" r="2.4" /><circle cx="254" cy="122" r="2" /><circle cx="284" cy="128" r="2.6" />
-            <circle cx="70" cy="134" r="1.8" /><circle cx="300" cy="140" r="1.6" />
-          </g>
-          <path fill="currentColor" d="M268 22a15 15 0 0 1 15 15c0 11-15 25-15 25s-15-14-15-25a15 15 0 0 1 15-15Z" />
-          <text class="pin-label" x="268" y="40.5" text-anchor="middle">311</text>
-        </g>
-      </Fragment>
-    )}
-
-    {id === 'clinic-scheduler' && (
-      <Fragment>
-        <g class="ink-a">
-          <defs>
-            <pattern id="clin-a" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-              <circle cx="2" cy="2" r="1.15" fill="currentColor" />
-            </pattern>
-          </defs>
-          <g transform="rotate(-4 150 92)">
-            <rect x="72" y="32" width="156" height="122" rx="6" fill="#fff" stroke="currentColor" stroke-width="2.5" />
-            <rect x="72" y="32" width="156" height="24" rx="6" fill="url(#clin-a)" />
-            <rect x="100" y="22" width="7" height="18" rx="3.5" fill="currentColor" />
-            <rect x="192" y="22" width="7" height="18" rx="3.5" fill="currentColor" />
-            <path stroke="currentColor" stroke-width="1" fill="none" d="M94.3 56V154M116.6 56V154M138.9 56V154M161.1 56V154M183.4 56V154M205.7 56V154M72 80.5H228M72 105H228M72 129.5H228" />
-          </g>
-          <path stroke="currentColor" stroke-width="4" stroke-linecap="round" fill="none" d="M26 18C14 70 34 124 92 146S214 176 252 150" />
-          <circle cx="26" cy="18" r="4" fill="currentColor" />
-          <circle cx="262" cy="144" r="13" fill="#fff" stroke="currentColor" stroke-width="4" />
-          <circle cx="262" cy="144" r="5" fill="currentColor" />
-        </g>
-        <g class="ink-b">
-          <defs>
-            <pattern id="clin-b" width="5" height="5" patternUnits="userSpaceOnUse">
-              <circle cx="2.5" cy="2.5" r="1.5" fill="currentColor" />
-            </pattern>
-          </defs>
-          <g transform="rotate(-4 150 92)" fill="currentColor">
-            <rect x="117" y="81" width="44" height="24" />
-            <rect x="161" y="57" width="22" height="24" fill="url(#clin-b)" />
-            <rect x="73" y="106" width="43" height="23" fill="url(#clin-b)" />
-            <rect x="184" y="106" width="21" height="23" />
-            <rect x="139" y="130" width="22" height="23" fill="url(#clin-b)" />
-          </g>
-          <path fill="currentColor" d="M254 20h16v16h16v16h-16v16h-16V52h-16V36h16Z" />
-        </g>
-      </Fragment>
-    )}
-
-    {id === 'task-sync' && (
-      <Fragment>
-        <g class="ink-a">
-          <circle cx="160" cy="92" r="76" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="3 7" stroke-linecap="round" />
-          <path fill="currentColor" d="M228 52l14-6-2 15ZM92 132l-14 6 2-15Z" />
-          <g transform="rotate(-9 122 76)" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none">
-            <rect x="98" y="54" width="10" height="10" rx="2" /><path d="M100 58l3 3 6-7" />
-            <path d="M114 59h28" opacity=".9" /><path d="M110 59h36" stroke-width="1.5" />
-            <rect x="98" y="72" width="10" height="10" rx="2" /><path d="M100 76l3 3 6-7" />
-            <path d="M114 77h22" />
-            <rect x="98" y="90" width="10" height="10" rx="2" />
-            <path d="M114 95h30" />
-          </g>
-          <g transform="rotate(7 196 98)" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none">
-            <path d="M176 82h40M176 94h32M176 106h38M176 118h20" />
-          </g>
-        </g>
-        <g class="ink-b" fill="currentColor">
-          <rect x="88" y="42" width="72" height="72" rx="2" transform="rotate(-9 122 76)" />
-          <rect x="164" y="66" width="68" height="68" rx="2" transform="rotate(7 196 98)" opacity=".85" />
-          <rect x="132" y="104" width="44" height="44" rx="2" transform="rotate(-3 154 126)" opacity=".7" />
-        </g>
-      </Fragment>
-    )}
-
-    {id === 'acadia-pizza' && (
-      <Fragment>
-        <g class="ink-b">
-          <defs>
-            <pattern id="acad-b" width="5" height="5" patternUnits="userSpaceOnUse">
-              <circle cx="2.5" cy="2.5" r="1.6" fill="currentColor" />
-            </pattern>
-          </defs>
-          <circle cx="160" cy="92" r="74" fill="url(#acad-b)" />
-          <circle cx="160" cy="92" r="62" fill="currentColor" fill-opacity=".38" />
-          <g fill="currentColor">
-            {tables.map((t) => (
-              <circle cx={160 + 62 * Math.cos(rad(t.angle + 14))} cy={92 + 62 * Math.sin(rad(t.angle + 14))} r="6.5" />
-            ))}
-            <circle cx="160" cy="92" r="9" />
-          </g>
-        </g>
-        <g class="ink-a">
-          <g stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            {slices.map((a) => (
-              <line x1="160" y1="92" x2={160 + 74 * Math.cos(rad(a))} y2={92 + 74 * Math.sin(rad(a))} />
-            ))}
-          </g>
-          <circle cx="160" cy="92" r="74" fill="none" stroke="currentColor" stroke-width="2.5" />
-          <g class="tbl" text-anchor="middle" fill="currentColor">
-            {tables.map((t) => (
-              <text x={160 + 44 * Math.cos(rad(t.angle))} y={95 + 44 * Math.sin(rad(t.angle))}>{t.label}</text>
-            ))}
-          </g>
-          <path stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none" d="M262 46c-6-8 6-12 0-20M276 50c-6-8 6-12 0-20M290 46c-6-8 6-12 0-20" />
-        </g>
-      </Fragment>
-    )}
-
-    {id === 'valorant-analyst' && (
-      <Fragment>
-        <g class="ink-a">
-          <defs>
-            <pattern id="valo-a" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-              <circle cx="2" cy="2" r="1" fill="currentColor" />
-            </pattern>
-          </defs>
-          <path fill="url(#valo-a)" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" d="M24 24H118V62H160V24H296V96H236V140H122V112H66V140H24Z" />
-          <path fill="#fff" stroke="currentColor" stroke-width="2" d="M96 62H136V96H96ZM176 46H216V80H176Z" />
-          <text class="site" x="262" y="66">A</text>
-          <text class="site" x="38" y="126">B</text>
-          <g fill="currentColor">
-            {rounds.map((r, i) => r === 'w' && <rect x={70 + i * 14} y="154" width="10" height="10" rx="1.5" />)}
-          </g>
-        </g>
-        <g class="ink-b">
-          <path stroke="currentColor" stroke-width="3" stroke-dasharray="7 5" stroke-linecap="round" fill="none" d="M50 128C80 120 84 92 120 86S200 110 220 82 244 64 250 62" />
-          <g stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round">
-            <circle cx="262" cy="58" r="15" />
-            <path d="M262 36v10M262 70v10M240 58h10M274 58h10" />
-          </g>
-          <path stroke="currentColor" stroke-width="3" stroke-linecap="round" d="M150 120l10 10M160 120l-10 10M88 40l8 8M96 40l-8 8" />
-          <g fill="currentColor">
-            {rounds.map((r, i) => r === 'l' && <rect x={70 + i * 14} y="154" width="10" height="10" rx="1.5" />)}
-          </g>
-        </g>
-      </Fragment>
-    )}
-
-    {id === 'turbine-inspection-site' && (
-      <Fragment>
-        <g class="ink-b">
-          <defs>
-            <pattern id="turb-b" width="5" height="5" patternUnits="userSpaceOnUse">
-              <circle cx="2.5" cy="2.5" r="1.6" fill="currentColor" />
-            </pattern>
-          </defs>
-          <circle cx="140" cy="90" r="70" fill="url(#turb-b)" />
-          <circle cx="140" cy="90" r="76" fill="none" stroke="currentColor" stroke-width="8" />
-          <path stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none" d="M222 118l9 9 18-19" />
-        </g>
-        <g class="ink-a">
-          <circle cx="140" cy="90" r="76" fill="none" stroke="currentColor" stroke-width="2.5" />
-          <circle cx="140" cy="90" r="66" fill="none" stroke="currentColor" stroke-width="1" />
-          <g stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none">
-            {blades.map((a) => (
-              <path transform={`translate(140 90) rotate(${a})`} d="M0-16C12-28 6-48 16-66" />
-            ))}
-          </g>
-          <circle cx="140" cy="90" r="16" fill="currentColor" />
-          <circle cx="140" cy="90" r="5" fill="#fff" />
-          <circle cx="236" cy="118" r="28" fill="none" stroke="currentColor" stroke-width="4" />
-          <path stroke="currentColor" stroke-width="8" stroke-linecap="round" d="M256 138l30 28" />
-        </g>
-      </Fragment>
-    )}
-  </svg>
-</div>
+{draw && (
+  <div class="art" aria-hidden="true">
+    <svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" set:html={draw()} />
+  </div>
+)}
 
 <style>
-  .print {
-    --ink-a: #2f43ff;
+  .art {
     aspect-ratio: 16 / 9;
     max-width: 100%;
     border-radius: 12px;
     overflow: hidden;
     margin-bottom: 22px;
-    isolation: isolate;
   }
-  svg { display: block; width: 100%; height: 100%; }
-  .paper { fill: #eef0f3; }
-  .ink-a { color: var(--ink-a); }
-  .ink-b {
-    color: var(--ink-b);
-    mix-blend-mode: multiply;
-    transform: translate(4px, -3px);
-    transition: transform .9s cubic-bezier(.2, .7, .2, 1);
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    transition: transform .6s cubic-bezier(.2, .7, .2, 1);
   }
-  :global(.card.on) .ink-b { transform: translate(0, 0); }
-  .pin-label { font: 800 11px var(--f-display); fill: #fff; }
-  .tbl { font: 800 10px var(--f-body); paint-order: stroke; stroke: #eef0f3; stroke-width: 3px; stroke-linejoin: round; }
-  .site { font: 900 26px var(--f-display); fill: currentColor; }
+  /* The active card's scene eases in a touch closer. */
+  :global(.card.on) svg { transform: scale(1.04); }
 
   @media (prefers-reduced-motion: reduce) {
-    .ink-b { transform: none; transition: none; }
+    svg { transition: none; }
+    :global(.card.on) svg { transform: none; }
   }
 </style>
