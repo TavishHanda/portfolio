@@ -1,7 +1,8 @@
 ---
 import { getCollection, render } from 'astro:content';
 
-const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const projects = (await getCollection('projects', (p) => p.data.featured))
+  .sort((a, b) => a.data.order - b.data.order);
 const first = projects[0].data;
 ---
 <section id="work">
@@ -42,7 +43,7 @@ const first = projects[0].data;
     display: grid;
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     gap: clamp(24px, 5vw, 72px);
-    padding-bottom: 100px;
+    padding-bottom: 80px;
   }
   .pin { position: sticky; top: 90px; align-self: start; min-width: 0; }
   .count { font-family: var(--f-mono); font-size: 13px; color: var(--muted); }

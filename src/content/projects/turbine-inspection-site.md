@@ -5,6 +5,7 @@ meta: 2025 · Client
 tags: [HTML, Tailwind, Client work]
 shot: Client website
 order: 6
+featured: true
 links:
   - label: Code
     href: https://github.com/TavishHanda/Aircraft-Inspection-Company-Website

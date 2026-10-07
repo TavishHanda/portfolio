@@ -4,7 +4,8 @@ shortTitle: Calgary 311 Explorer
 meta: 2026 · Live
 tags: [C#, ASP.NET Core, Azure]
 shot: Live on Azure
-order: 2
+order: 1
+featured: true
 links:
   - label: Live site
     href: https://calgary-311-explorer-aae0dnhnheb2ezf9.westus-01.azurewebsites.net

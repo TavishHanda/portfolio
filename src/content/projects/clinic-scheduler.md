@@ -4,7 +4,8 @@ shortTitle: Clinic Scheduler
 meta: 2025 · Team of five · UX
 tags: [Flask, React, Python]
 shot: HCI prototype
-order: 8
+order: 2
+featured: true
 links:
   - label: Live site
     href: https://tavishhanda.github.io/HCI_Horizontal_Prototype/
