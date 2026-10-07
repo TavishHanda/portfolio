@@ -1,9 +1,9 @@
 ---
 title: Medical Clinic Scheduler
 shortTitle: Clinic Scheduler
-meta: Team · UX
-tags: [Flask, Python, JavaScript]
+meta: 2025 · Team of five · UX
+tags: [Flask, React, Python]
 shot: HCI prototype
-order: 6
+order: 7
 ---
-A working web prototype of a clinic dashboard with search, data entry, and login, designed from user-flow research and wireframes.
+A working prototype of a clinic scheduling dashboard, designed from user-flow research and wireframes, with a Flask API and a React front end. My part: the patient and caretaker profile screens, and getting the API configured for the deployed version.
