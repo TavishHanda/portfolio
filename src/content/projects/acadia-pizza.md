@@ -1,9 +1,8 @@
 ---
 title: Acadia Pizza
 shortTitle: Acadia Pizza
-meta: 2024 · Database course · Team
+meta: Database course team, 2024
 tags: [PHP, Azure SQL, SQL]
-shot: Ordering and staff system
 order: 4
 featured: true
 ---

@@ -10,9 +10,8 @@ const projects = defineCollection({
   schema: z.object({
     title: z.string(),
     shortTitle: z.string(),   // the big text in the pinned column
-    meta: z.string(),         // small line under the title, e.g. "2026 · Live"
+    meta: z.string(),         // small line under the title, e.g. "Team of five, 2025"
     tags: z.array(z.string()),
-    shot: z.string(),         // label shown on the image placeholder
     order: z.number(),        // lower numbers show first
     featured: z.boolean(),    // true = big scrolling card, false = "More projects" list
     summary: z.string().optional(), // one line for the "More projects" list

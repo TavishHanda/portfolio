@@ -1,9 +1,8 @@
 ---
 title: Machine learning for diabetes detection
 shortTitle: Diabetes Detection
-meta: Data · ML
+meta: Machine learning
 tags: [Python, scikit-learn, Pandas]
-shot: k-nearest neighbors
 order: 9
 featured: false
 summary: "A k-nearest neighbors classifier for diabetes, evaluated with cross-validation."

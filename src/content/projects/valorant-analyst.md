@@ -1,9 +1,8 @@
 ---
 title: Valorant Analyst
 shortTitle: Valorant Analyst
-meta: In progress
+meta: Solo project, in progress
 tags: [JavaScript, Node.js, Data]
-shot: Post-match review
 order: 5
 featured: true
 ---

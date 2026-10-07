@@ -1,9 +1,8 @@
 ---
 title: Turbine Inspection Services
 shortTitle: Turbine Inspection Site
-meta: 2025 · Client
+meta: Client project, 2025
 tags: [HTML, Tailwind, Client work]
-shot: Client website
 order: 6
 featured: true
 links:

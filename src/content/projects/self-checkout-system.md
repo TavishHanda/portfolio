@@ -1,9 +1,8 @@
 ---
 title: Automated Checkout System
 shortTitle: Self-Checkout System
-meta: Team of four · Lead
+meta: Team lead, 2024
 tags: [Java, JUnit, Team lead]
-shot: 89 to 96% test coverage
 order: 8
 featured: false
 summary: "Payment handling for a self-checkout station. Led a team of four, with 89 to 96% test coverage."

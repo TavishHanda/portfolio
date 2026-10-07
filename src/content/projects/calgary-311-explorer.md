@@ -1,9 +1,8 @@
 ---
 title: Calgary 311 Explorer
 shortTitle: Calgary 311 Explorer
-meta: 2026 · Live
+meta: Solo project, live since 2026
 tags: [C#, ASP.NET Core, Azure]
-shot: Live on Azure
 order: 1
 featured: true
 links:

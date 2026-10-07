@@ -1,9 +1,8 @@
 ---
 title: SSRF URL Previewer
 shortTitle: SSRF Previewer
-meta: 2025 · Security
+meta: Security course, 2025
 tags: [TypeScript, Next.js, SQLite]
-shot: Deliberately vulnerable
 order: 7
 featured: false
 summary: "A deliberately vulnerable link previewer for a security course. I built the login, SQLite accounts, and search history."

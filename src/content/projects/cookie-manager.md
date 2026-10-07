@@ -1,9 +1,8 @@
 ---
 title: Cookie Manager Extension
 shortTitle: Cookie Manager
-meta: 2023 · Working extension · Team
+meta: Team project, 2023
 tags: [JavaScript, Chrome extension]
-shot: Installed in Chrome
 order: 10
 featured: false
 summary: "A working Chrome extension to view, edit, and block cookies per site."

@@ -1,9 +1,8 @@
 ---
 title: Task-Sync
 shortTitle: Task-Sync
-meta: 2025 · Team of five
+meta: Team of five, 2025
 tags: [React, Firebase, Docker]
-shot: Task manager
 order: 3
 featured: true
 ---

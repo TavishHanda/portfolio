@@ -1,9 +1,8 @@
 ---
 title: Medical Clinic Scheduler
 shortTitle: Clinic Scheduler
-meta: 2025 · Team of five · UX
+meta: Team of five, 2025
 tags: [Flask, React, Python]
-shot: HCI prototype
 order: 2
 featured: true
 links:
